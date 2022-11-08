@@ -1,0 +1,142 @@
+.navbar {
+  background-color: #010118;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar .logo-container {
+  margin-left: 20px;
+  width: 80px;
+  float: left;
+  z-index: 100;
+}
+.navbar img {
+  width: 100%;
+  height: 100%;
+}
+.navbar span {
+  color: white;
+  position: absolute;
+  right: 1.5%;
+  z-index: 100;
+}
+.navbar .search-container {
+  display: flex;
+  flex-direction: row;
+  vertical-align: center;
+  flex-shrink: 1fr;
+  height: 25px;
+}
+.navbar .search-container div {
+  height: 100%;
+}
+.navbar .search-container input {
+  height: 100%;
+  min-width: 50px;
+}
+.navbar .search-container .search-icon {
+  height: 55%;
+  margin-top: 1px;
+  background-color: white;
+  border-radius: 2px;
+  padding: 5px;
+}
+.navbar .navigation_to_pages {
+  width: 40%;
+  float: right;
+}
+.navbar ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.navbar li {
+  color: white;
+  cursor: pointer;
+}
+.navbar a {
+  color: white;
+  text-decoration: none;
+}
+@media screen and (max-width: 992px) {
+  .navbar span {
+    display: block !important;
+  }
+  .navbar .normalUl {
+    display: none;
+  }
+  .navbar .responsiveUl {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    position: absolute;
+    background-color: #010118;
+    width: 100%;
+    right: 0;
+    top: 0;
+    padding: 40px 0 10px 0;
+    text-align: center;
+  }
+  .navbar .responsiveUl li {
+    width: 100%;
+    padding: 7px 0;
+    border-radius: 10px;
+    transition: all 0.5s;
+  }
+  .navbar .responsiveUl a {
+    width: 100%;
+    transition: all 0.5s;
+  }
+  .navbar .responsiveUl li:hover {
+    background-color: white;
+    color: black;
+  }
+  .navbar .responsiveUl li:hover a {
+    background-color: white;
+    color: black;
+  }
+}
+
+.login-outer-container {
+  background-color: #010118;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-inner-container {
+  width: 40vw;
+  height: 60vh;
+  background-color: rgb(24, 17, 98);
+  color: white;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-inner-container a {
+  text-decoration: none;
+  color: white;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/*# sourceMappingURL=index.css.map */

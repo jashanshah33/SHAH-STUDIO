@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {} from "react-router-dom";
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Navbar from './components/Navbar'
+import { useAuth } from "./hooks";
 
 function App() {
+
+  const auth = useAuth()
+
+  const PageNotFound = () => {
+    return <h1>404</h1>;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar />
+      <Switch>
+        <Route exact path="/">
+          {auth.token? <Home />: <Login/> }
+          
+        </Route>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route>
+          <PageNotFound />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
