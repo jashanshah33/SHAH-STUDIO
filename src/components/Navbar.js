@@ -1,11 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { faXmark, faBars, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../hooks";
+import axios from "axios";
 
 const Navbar = () => {
   const [Responsive, setResponsive] = useState(false);
+  const [searchKey, setSearchKey] = useState("");
+  const [tracks, setTracks] = useState([]);
+
+  const handelSearch = async () => {
+    if (!searchKey) {
+      return;
+    }
+    const data = await axios
+
+      .get("https://api.spotify.com/v1/search", {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+        params: {
+          q: searchKey,
+          type: "track",
+        },
+      })
+      .then((d) => {
+        console.log(d.data.tracks.items);
+        setTracks(d.data.tracks.items);
+        //setLatestPunjabi(d.data.tracks.items.slice(0,5))
+      });
+  };
+
   const auth = useAuth();
 
   const handelClick = () => {
@@ -33,13 +59,24 @@ const Navbar = () => {
       </span>
       <div className="search-container">
         <div>
-          <input type={"search"} />
+          <input
+            value={searchKey}
+            onChange={(e) => setSearchKey(e.target.value)}
+            type={"search"}
+            placeholder={"Search"}
+          />
         </div>
         <div>
           <FontAwesomeIcon
+            onClick={handelSearch}
             className="search-icon"
             icon={faSearch}
           />
+        </div>
+        <div className="search-box">
+          {tracks.map((track) => (
+            <p key={track.id}>{track.album.name}</p>
+          ))}
         </div>
       </div>
       <div className="navigation_to_pages">
