@@ -1,6 +1,8 @@
 @use "navbar";
 @use "login";
 @use "home" ;
+@use "playlist";
+@use 'player';
 @import './colors';
 
   body {
@@ -11,6 +13,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: $background ;
+  color: $white;
 }
 
 code {
@@ -18,16 +21,3 @@ code {
     monospace;
 }
 
-.search-box::-webkit-scrollbar {
-  width: 8px;
-  background-color: white;
-  border-radius: 10px;
-}
-.search-box::-webkit-scrollbar-track {
-  width: 20px;
-}
-.search-box::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background-color: rgb(95, 95, 95);
-  width: 1px;
-}

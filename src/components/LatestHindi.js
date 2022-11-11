@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../hooks";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const LatestHindi = () => {
   const [latestHindi, setLatestHindi] = useState([]);
@@ -30,6 +32,9 @@ const LatestHindi = () => {
         {latestHindi.map((song) => (
           <div key={song.track.album.id}>
             <img src={song.track.album.images[0].url} />
+            <div className="play-btn">
+            <div className="triangle"></div>
+            </div>
             <h4>{song.track.album.name}</h4>
           </div>
         ))}

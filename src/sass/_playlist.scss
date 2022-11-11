@@ -1,0 +1,34 @@
+@import "./global";
+@import "./colors";
+
+.playlist_by_caegories {
+  padding: 100px 50px 50px 50px;
+  color: $white;
+
+}
+
+.playlist {
+    display: flex;
+    background-color: rgba(26, 25, 25, 0.8);
+    align-items: center;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    padding-top: 5px;
+
+    .icon{
+        color: rgb(212, 212, 212);
+    }
+    div{
+        margin-left: 20px;
+    }
+    .playlist_img{
+        width: 50px;
+    }
+    img{
+        width: 100%;
+        height: 100%;
+    }
+    .description{
+        line-height: 0;
+    }
+  }

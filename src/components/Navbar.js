@@ -9,6 +9,7 @@ const Navbar = () => {
   const [Responsive, setResponsive] = useState(false);
   const [searchKey, setSearchKey] = useState("");
   const [tracks, setTracks] = useState([]);
+  const [searchBox, setSearchBox] = useState(false);
 
   const handelSearch = async () => {
     if (!searchKey) {
@@ -26,9 +27,9 @@ const Navbar = () => {
         },
       })
       .then((d) => {
-        console.log(d.data.tracks.items);
+        // console.log(d.data.tracks.items);
         setTracks(d.data.tracks.items);
-        //setLatestPunjabi(d.data.tracks.items.slice(0,5))
+        setSearchBox(true);
       });
   };
 
@@ -47,6 +48,9 @@ const Navbar = () => {
     return <Redirect to={"login"} />;
   }
 
+  document.addEventListener("click", function () {
+    setSearchBox(false);
+  });
   return (
     <nav className="navbar">
       <div className="logo-container">
@@ -73,7 +77,11 @@ const Navbar = () => {
             icon={faSearch}
           />
         </div>
-        <div className="search-box">
+        <div
+          style={{ display: searchBox ? "block" : "none" }}
+          className="search-box"
+          onClick={(e) => e.stopPropagation()}
+        >
           {tracks.map((track) => (
             <p key={track.id}>{track.album.name}</p>
           ))}

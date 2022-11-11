@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../hooks";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
-    const auth = useAuth();
+  const auth = useAuth();
 
   useEffect(() => {
     const getCategories = async () => {
@@ -21,7 +24,7 @@ const Categories = () => {
           },
         })
         .then((d) => {
-          // console.log(d.data.categories.items);
+          //console.log(d.data.categories);
           setCategories(d.data.categories.items);
         });
     };
@@ -34,6 +37,11 @@ const Categories = () => {
         {categories.map((item) => (
           <div key={item.id}>
             <img src={item.icons[0].url} />
+            <Link to={`/playlist/${item.id}`}>
+            <div className="play-btn">
+             <div className="triangle"></div>
+            </div>
+            </Link>
             <h3>{item.name}</h3>
           </div>
         ))}
@@ -42,4 +50,4 @@ const Categories = () => {
   );
 };
 
-export default Categories
+export default Categories;
