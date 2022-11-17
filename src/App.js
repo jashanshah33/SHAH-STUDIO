@@ -6,6 +6,7 @@ import Playlists from "./pages/Playlist";
 import Navbar from "./components/Navbar";
 import { useAuth } from "./hooks";
 import Player from "./pages/Player";
+import Favoutires from "./pages/Favoutire";
 
 function App() {
   const auth = useAuth();
@@ -27,8 +28,11 @@ function App() {
         <Route exact path={"/playlist/:id"}>
           <Playlists />
         </Route>
-        <Route exact path={"/player/:id"}>
+        <Route exact path={"/player/:playlistId/:TrackId"}>
           <Player />
+        </Route>
+        <Route exact path={'/favoutire'}>
+          <Favoutires/>
         </Route>
         <Route>
           <PageNotFound />

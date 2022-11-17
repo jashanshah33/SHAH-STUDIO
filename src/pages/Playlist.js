@@ -3,7 +3,8 @@ import axios from "axios";
 import { useAuth } from "../hooks";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useParams } from "react-router-dom";
+import { Redirect, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Playlists = () => {
   const [latestPunjabi, setLatestPunjabi] = useState([]);
@@ -41,33 +42,50 @@ const Playlists = () => {
           },
         })
         .then((d) => {
-         console.log(d.data.tracks.items[0].track.artists);
+          //console.log(d.data.tracks.items);
           setLatestPunjabi(d.data.tracks.items.slice(0, 50));
         });
     };
 
     getLatestPunjabi();
   }, [playlist_id]);
+
+  if (auth.token === null) {
+    return <Redirect to={'/login'} />
+   }
   return (
     <div className="playlist_by_caegories">
       <h1>{headerName}</h1>
 
       <div className="playlist-container">
-        {latestPunjabi.map((song, index) => (
-          <div className="playlist" key={`id${song.track.album.id}, ${index}`}>
-            <div className="playlist_icon">
-            <FontAwesomeIcon className='icon' icon={faCircle} />
-            </div>
+        {latestPunjabi ? (
+          <>
+            {latestPunjabi.map((song, index) => (
+              <Link
+                key={`id${song?.track?.album?.id}, ${index}`}
+                to={`/player/${playlist_id}/${song?.track?.id}`}
+              >
+                <div className="playlist">
+                  <div className="playlist_icon">
+                    <FontAwesomeIcon className="icon" icon={faCircle} />
+                  </div>
 
-            <div className="playlist_img">
-              <img src={song.track.album.images[0].url} />
-            </div>
-            <div className="description">
-              <h5>{song.track.album.name}</h5>
-              <p>{song.track.artists[0].name}</p>
-            </div>
-          </div>
-        ))}
+                  <div className="playlist_img">
+                    <img src={song?.track?.album?.images[0].url} />
+                  </div>
+                  <div className="description">
+                    <h5>{song?.track?.album?.name}</h5>
+                    <p>{song?.track?.artists[0].name}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </>
+        ) : (
+          <>
+            <h1>Unable to Load</h1>
+          </>
+        )}
       </div>
     </div>
   );

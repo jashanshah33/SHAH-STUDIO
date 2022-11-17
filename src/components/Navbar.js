@@ -10,6 +10,8 @@ const Navbar = () => {
   const [searchKey, setSearchKey] = useState("");
   const [tracks, setTracks] = useState([]);
   const [searchBox, setSearchBox] = useState(false);
+  const randomPlaylist = "499UwrOYZa7t0ZraJGewpy"
+
 
   const handelSearch = async () => {
     if (!searchKey) {
@@ -27,10 +29,12 @@ const Navbar = () => {
         },
       })
       .then((d) => {
-        // console.log(d.data.tracks.items);
+        //console.log(d.data);
         setTracks(d.data.tracks.items);
         setSearchBox(true);
       });
+
+      setSearchKey('')
   };
 
   const auth = useAuth();
@@ -83,7 +87,9 @@ const Navbar = () => {
           onClick={(e) => e.stopPropagation()}
         >
           {tracks.map((track) => (
-            <p key={track.id}>{track.album.name}</p>
+            <Link to={`/player/${randomPlaylist}/${track.id}`}>
+              <p onClick={()=> setSearchBox(false)} key={track.id}>{track.album.name}</p>
+            </Link>
           ))}
         </div>
       </div>
@@ -92,7 +98,9 @@ const Navbar = () => {
           <Link to={"/"}>
             <li onClick={() => setResponsive(false)}>Home</li>
           </Link>
+          <Link to={'/favoutire'}>
           <li onClick={() => setResponsive(false)}>Favoutires</li>
+          </Link>
           {auth.token ? (
             <>
               <li onClick={handelLogout}>Log Out</li>

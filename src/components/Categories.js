@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../hooks";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+//import { faPlay } from "@fortawesome/free-solid-svg-icons";
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
 const Categories = () => {
@@ -29,14 +29,14 @@ const Categories = () => {
         });
     };
     getCategories();
-  }, []);
+  }, [auth.token]);
   return (
     <div>
       <h1>Categories</h1>
       <div className="full-container">
         {categories.map((item) => (
           <div key={item.id}>
-            <img src={item.icons[0].url} />
+            <img alt="" src={item.icons[0].url} />
             <Link to={`/playlist/${item.id}`}>
             <div className="play-btn">
              <div className="triangle"></div>

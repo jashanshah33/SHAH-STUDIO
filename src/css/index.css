@@ -75,6 +75,7 @@
   cursor: pointer;
   transition: background-color 0.4s;
   margin: 0;
+  color: black;
 }
 .navbar .search-box p:hover {
   border-radius: 10px;
@@ -226,6 +227,9 @@
   padding: 100px 50px 50px 50px;
   color: white;
 }
+.playlist_by_caegories a {
+  text-decoration: none;
+}
 
 .playlist {
   display: flex;
@@ -250,10 +254,76 @@
 }
 .playlist .description {
   line-height: 0;
+  color: white;
 }
 
 .player-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
   padding: 100px 50px 50px 50px;
+}
+
+.track_img {
+  border-radius: 50%;
+  width: 30%;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.track_description {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.track_description #audio-player {
+  background-color: red;
+  z-index: 100;
+}
+
+.icons_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(26, 25, 25, 0.8);
+  border-radius: 10px;
+  padding: 10px 0;
+}
+.icons_container .heart-icon {
+  width: 110px;
+}
+.icons_container .heart-icon * {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.icons_container .volume-icons {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.middle_icons * {
+  margin-left: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.range {
+  -webkit-appearance: none;
+  background-color: rgb(255, 255, 255);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-left: 1rem;
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: rgb(136, 136, 136);
+  box-shadow: -110px 0 0 100px rgb(0, 115, 4);
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
 }
 
 body {
