@@ -87,8 +87,8 @@ const Navbar = () => {
           onClick={(e) => e.stopPropagation()}
         >
           {tracks.map((track) => (
-            <Link to={`/player/${randomPlaylist}/${track.id}`}>
-              <p onClick={()=> setSearchBox(false)} key={track.id}>{track.album.name}</p>
+            <Link key={track.id} to={`/player/${randomPlaylist}/${track.id}`}>
+              <p onClick={()=> setSearchBox(false)} >{track.album.name}</p>
             </Link>
           ))}
         </div>

@@ -26,7 +26,7 @@ const LatestHindi = () => {
     };
 
     getLatestHindi();
-  }, [auth.token]);
+  }, [auth]);
   return (
     <div>
       <h1>Latest Hindi</h1>

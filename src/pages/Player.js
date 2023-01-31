@@ -19,6 +19,7 @@ const Player = () => {
   const { playlistId, TrackId } = useParams();
   const [music, setMusic] = useState(false);
   const myRef = useRef();
+  const [liked, setLiked] = useState(false);
 
   useEffect(() => {
     const getTrack = async () => {
@@ -26,15 +27,15 @@ const Player = () => {
 
         .get(`https://api.spotify.com/v1/tracks/${TrackId}`, {
           headers: {
-            Authorization: `Bearer ${auth.token}`,
+            Authorization: `Bearer ${auth?.token}`,
           },
           params: {
             market: "ES",
           },
         })
         .then((d) => {
-          setTrack(d.data);
-          console.log({ "d.data": d.data });
+          setTrack(d?.data);
+          // console.log({ "d.data": d.data });
         });
     };
 
@@ -45,17 +46,17 @@ const Player = () => {
 
         .get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
           headers: {
-            Authorization: `Bearer ${auth.token}`,
+            Authorization: `Bearer ${auth?.token}`,
           },
         })
         .then((d) => {
           //console.log(d.data.tracks.items);
-          setRandomTrackList(d.data.tracks.items);
+          setRandomTrackList(d?.data?.tracks?.items);
         });
     };
 
     getRandomSongs();
-  }, [TrackId, auth.token]);
+  }, [TrackId, auth?.token]);
 
   const playPause = () => {
     setMusic(music ? false : true);
@@ -65,18 +66,13 @@ const Player = () => {
       myRef.current.pause();
     }
   };
+  useEffect(() => {
+    setMusic(false);
+  }, [TrackId]);
 
-  const handelLike = async () => {
-    // const { data } = await axios.get(`https://api.spotify.com/v1/me/tracks`, {
-    //   headers: {
-    //     Authorization: `Bearer ${auth.token}`,
-    //   },
-    //   // params: {
-    //   //  ids:id
-    //   // },
-    // });
-    // console.log(data);
-  };
+
+
+
 
   const [trackNumber, setTrackNumber] = useState(0);
   const [randomTrack, setRandomTrack] = useState({});
@@ -89,10 +85,10 @@ const Player = () => {
     } else {
       setBackward(false);
     }
-    console.log(randomTrackList);
+    //console.log(randomTrackList);
     setRandomTrack(randomTrackList[trackNumber]?.track);
 
-    console.log(randomTrack);
+    //console.log(randomTrack);
   }, [trackNumber]);
 
   const PreviousSong = () => {
@@ -112,6 +108,44 @@ const Player = () => {
 
   const fetchedTrack = startRandom ? randomTrack : track;
 
+  useEffect(() => {
+    const checkIfSongIsFav = async () => {
+      const { data } = await axios.get(`https://api.spotify.com/v1/me/tracks`, {
+        headers: {
+          Authorization: `Bearer ${auth?.token}`,
+        },
+      });
+      const LikedSong = await data.items.filter((song) => {
+        return song?.track?.id == fetchedTrack?.id;
+      });
+
+      if (LikedSong.length) {
+        setLiked(true);
+      } else {
+        setLiked(false);
+      }
+    };
+    checkIfSongIsFav();
+  }, [liked, fetchedTrack]);
+
+  const handelLike = async () => {
+    setLiked(!liked);
+    if (liked) {
+      await axios.delete(
+        `https://api.spotify.com/v1/me/tracks?ids=${fetchedTrack?.id}`,
+        { headers: { Authorization: `Bearer ${auth?.token}` } }
+      );
+      // console.log(response);
+    } else {
+      await axios.put(
+        "https://api.spotify.com/v1/me/tracks",
+        { ids: [fetchedTrack?.id] },
+        { headers: { Authorization: `Bearer ${auth?.token}` } }
+      );
+      // console.log(response);
+    }
+  };
+
   if (auth.token === null) {
     return <Redirect to={"/login"} />;
   }
@@ -130,14 +164,26 @@ const Player = () => {
           </div>
           <div className="track_description">
             <h2>{fetchedTrack?.album?.name}</h2>
-            <h3>{fetchedTrack?.album?.artists[0].name}</h3>
+            <h3>{fetchedTrack?.album?.artists[0]?.name}</h3>
           </div>
           <div className="icons_container">
             <div className="heart-icon">
-              <FontAwesomeIcon
-                onClick={handelLike}
-                icon={faHeart}
-              ></FontAwesomeIcon>
+              {liked ? (
+                <>
+                  <FontAwesomeIcon
+                    onClick={handelLike}
+                    icon={faHeart}
+                    style={{ color: "green" }}
+                  ></FontAwesomeIcon>
+                </>
+              ) : (
+                <>
+                  <FontAwesomeIcon
+                    onClick={handelLike}
+                    icon={faHeart}
+                  ></FontAwesomeIcon>
+                </>
+              )}
             </div>
 
             <audio

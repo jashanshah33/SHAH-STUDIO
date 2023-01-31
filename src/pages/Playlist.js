@@ -7,15 +7,15 @@ import { Redirect, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Playlists = () => {
-  const [latestPunjabi, setLatestPunjabi] = useState([]);
+  const [platlistArray, setPlatlistArray] = useState([]);
   const auth = useAuth();
   const { id } = useParams();
   let headerName = "";
   let playlist_id = "";
 
-  if (id === "toplists") {
-    playlist_id = "5ABHKGoOzxkaa28ttQV9sE";
-    headerName = "Top List";
+  if (id === "0JQ5DAqbMKFCWjUTdzaG0e") {
+    playlist_id = "37i9dQZF1EQqkOPvHGajmW";
+    headerName = "Indie";
   } else if (id === "0JQ5DAqbMKFHCxg5H5PtqW") {
     playlist_id = "7sTkp2X5Aq84v9w9UtfkaF";
     headerName = "Bollywood Songs";
@@ -34,21 +34,21 @@ const Playlists = () => {
 
   useEffect(() => {
     const getLatestPunjabi = async () => {
-      const data = await axios
+      await axios
 
         .get(`https://api.spotify.com/v1/playlists/${playlist_id}`, {
           headers: {
-            Authorization: `Bearer ${auth.token}`,
+            Authorization: `Bearer ${auth?.token}`,
           },
         })
         .then((d) => {
           //console.log(d.data.tracks.items);
-          setLatestPunjabi(d.data.tracks.items.slice(0, 50));
+          setPlatlistArray(d?.data?.tracks?.items.slice(0, 50));
         });
     };
 
     getLatestPunjabi();
-  }, [playlist_id]);
+  }, [playlist_id,auth]);
 
   if (auth.token === null) {
     return <Redirect to={'/login'} />
@@ -58,9 +58,9 @@ const Playlists = () => {
       <h1>{headerName}</h1>
 
       <div className="playlist-container">
-        {latestPunjabi ? (
+        {platlistArray.length ? (
           <>
-            {latestPunjabi.map((song, index) => (
+            {platlistArray.map((song, index) => (
               <Link
                 key={`id${song?.track?.album?.id}, ${index}`}
                 to={`/player/${playlist_id}/${song?.track?.id}`}

@@ -20,7 +20,7 @@ const Categories = () => {
           params: {
             country: "IN",
             locale: "sv_IN",
-            limit: 5,
+            limit: 6,
           },
         })
         .then((d) => {
@@ -29,12 +29,12 @@ const Categories = () => {
         });
     };
     getCategories();
-  }, [auth.token]);
+  }, [auth]);
   return (
     <div>
       <h1>Categories</h1>
       <div className="full-container">
-        {categories.map((item) => (
+        {categories.slice(1,6).map((item) => (
           <div key={item.id}>
             <img alt="" src={item.icons[0].url} />
             <Link to={`/playlist/${item.id}`}>
