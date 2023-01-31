@@ -11,8 +11,10 @@ const LatestHindi = () => {
   const id = "3bDJLJzvUBxBV4C7mezz6p"
 
   useEffect(() => {
+        //fetching latest Hindi songs playlist
+
     const getLatestHindi = async () => {
-      const data = await axios
+      await axios
 
         .get(`https://api.spotify.com/v1/playlists/${id}`, {
           headers: {

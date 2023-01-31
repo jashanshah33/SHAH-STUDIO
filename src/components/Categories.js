@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../hooks";
-//import { faPlay } from "@fortawesome/free-solid-svg-icons";
-//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
 const Categories = () => {
@@ -10,8 +8,10 @@ const Categories = () => {
   const auth = useAuth();
 
   useEffect(() => {
+
+   //fetching songs Categories
     const getCategories = async () => {
-      const data = await axios
+       await axios
 
         .get("https://api.spotify.com/v1/browse/categories", {
           headers: {

@@ -1,12 +1,14 @@
 import React from "react";
 import { loginUrl } from "../spotify";
+import { useAuth } from "../hooks";
+import { Redirect } from "react-router-dom";
 
 const Login = () => {
-  // const CLIENT_ID = "2e05aad2c7654cbba58f51695751d5ef";
-  // const REDIRECT_URI = "http://localhost:3000";
-  // const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
-  // const RESPONSE_TYPE = "token";
+  const auth = useAuth();
 
+  if (auth.token) {
+    return <Redirect to={"/"} />;
+  }
   return (
     <div className="login-outer-container">
       <div className="login-inner-container">

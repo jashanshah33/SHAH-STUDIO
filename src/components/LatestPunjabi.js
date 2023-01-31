@@ -10,7 +10,9 @@ const LatestPunjabi = () => {
   const auth = useAuth();
   const id = "312L27FribfVjHY0rD33Ks";
 
+
   useEffect(() => {
+    //fetching latest punjabi songs playlist
     const getLatestPunjabi = async () => {
       await axios
         .get(`https://api.spotify.com/v1/playlists/${id}`, {

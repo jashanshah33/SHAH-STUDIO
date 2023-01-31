@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { faXmark, faBars, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,15 +10,16 @@ const Navbar = () => {
   const [searchKey, setSearchKey] = useState("");
   const [tracks, setTracks] = useState([]);
   const [searchBox, setSearchBox] = useState(false);
+  
   const randomPlaylist = "499UwrOYZa7t0ZraJGewpy"
+  const auth = useAuth();
 
-
+  // fetch song seached
   const handelSearch = async () => {
     if (!searchKey) {
       return;
     }
-    const data = await axios
-
+    await axios
       .get("https://api.spotify.com/v1/search", {
         headers: {
           Authorization: `Bearer ${auth.token}`,
@@ -37,29 +38,31 @@ const Navbar = () => {
       setSearchKey('')
   };
 
-  const auth = useAuth();
-
+// to make navbar reponsive
   const handelClick = () => {
     setResponsive(!Responsive);
   };
 
+  // calling logout function on click
   const handelLogout = () => {
     setResponsive(false);
     auth.logout();
   };
 
-  if (auth.token === null) {
-    return <Redirect to={"login"} />;
-  }
 
+// making searchBox false when clicking on screen 
   document.addEventListener("click", function () {
     setSearchBox(false);
   });
+
+  if (auth.token === null) {
+    return <Redirect to={"login"} />;
+  }
   return (
     <nav className="navbar">
       <div className="logo-container">
         <Link to={"/"}>
-          <img src={require("../images/brand-logo.png")} />
+          <img src={require("../images/brand-logo.png")} alt="" />
         </Link>
       </div>
       <span onClick={handelClick} style={{ display: "none" }}>
@@ -87,7 +90,7 @@ const Navbar = () => {
           onClick={(e) => e.stopPropagation()}
         >
           {tracks.map((track) => (
-            <Link key={track.id} to={`/player/${randomPlaylist}/${track.id}`}>
+            <Link key={track.id} to={`/player/${randomPlaylist}/${track?.id}`}>
               <p onClick={()=> setSearchBox(false)} >{track.album.name}</p>
             </Link>
           ))}

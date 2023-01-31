@@ -15,15 +15,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Player = () => {
   const [track, setTrack] = useState({});
   const [randomTrackList, setRandomTrackList] = useState([]);
-  const auth = useAuth();
-  const { playlistId, TrackId } = useParams();
   const [music, setMusic] = useState(false);
-  const myRef = useRef();
   const [liked, setLiked] = useState(false);
+  const [trackNumber, setTrackNumber] = useState(0);
+  const [randomTrack, setRandomTrack] = useState({});
+  const [startRandom, setStartRandom] = useState(false);
+  const [backward, setBackward] = useState(false);
+  const { playlistId, TrackId } = useParams();
 
+
+  const myRef = useRef();
+  const auth = useAuth();
+
+  //to make music and randomsongs OFF, whenever Track Change
+  useEffect(() => {
+    setMusic(false);
+    setStartRandom(false)
+
+  }, [TrackId]);
+
+//as soon as user land on player page track and playist will me fetched
   useEffect(() => {
     const getTrack = async () => {
-      const data = await axios
+       await axios
 
         .get(`https://api.spotify.com/v1/tracks/${TrackId}`, {
           headers: {
@@ -42,7 +56,7 @@ const Player = () => {
     getTrack();
 
     const getRandomSongs = async () => {
-      const data = await axios
+       await axios
 
         .get(`https://api.spotify.com/v1/playlists/${playlistId}`, {
           headers: {
@@ -56,28 +70,9 @@ const Player = () => {
     };
 
     getRandomSongs();
-  }, [TrackId, auth?.token]);
+  }, [TrackId, playlistId, auth?.token]);
 
-  const playPause = () => {
-    setMusic(music ? false : true);
-    if (music === false) {
-      myRef.current.play();
-    } else if (music === true) {
-      myRef.current.pause();
-    }
-  };
-  useEffect(() => {
-    setMusic(false);
-  }, [TrackId]);
-
-
-
-
-
-  const [trackNumber, setTrackNumber] = useState(0);
-  const [randomTrack, setRandomTrack] = useState({});
-  const [startRandom, setStartRandom] = useState(false);
-  const [backward, setBackward] = useState(false);
+  //to test the trackNumber and set random track whenever tracknumber and randomTrackList change
 
   useEffect(() => {
     if (trackNumber >= 1) {
@@ -89,8 +84,19 @@ const Player = () => {
     setRandomTrack(randomTrackList[trackNumber]?.track);
 
     //console.log(randomTrack);
-  }, [trackNumber]);
+  }, [trackNumber, randomTrackList]);
 
+//handel play and pause
+  const playPause = () => {
+    setMusic(music ? false : true);
+    if (music === false) {
+      myRef.current.play();
+    } else if (music === true) {
+      myRef.current.pause();
+    }
+  };
+
+//handel previous song
   const PreviousSong = () => {
     if (backward) {
       setTrackNumber(trackNumber - 1);
@@ -99,6 +105,8 @@ const Player = () => {
       setMusic(false);
     }
   };
+
+//handel next song
   const NextSong = () => {
     setTrackNumber(trackNumber + 1);
     setStartRandom(true);
@@ -106,9 +114,12 @@ const Player = () => {
     setMusic(false);
   };
 
+  // show track accordingly
   const fetchedTrack = startRandom ? randomTrack : track;
 
+
   useEffect(() => {
+    //check if song is fav or not
     const checkIfSongIsFav = async () => {
       const { data } = await axios.get(`https://api.spotify.com/v1/me/tracks`, {
         headers: {
@@ -116,7 +127,7 @@ const Player = () => {
         },
       });
       const LikedSong = await data.items.filter((song) => {
-        return song?.track?.id == fetchedTrack?.id;
+        return song?.track?.id === fetchedTrack?.id;
       });
 
       if (LikedSong.length) {
@@ -126,8 +137,9 @@ const Player = () => {
       }
     };
     checkIfSongIsFav();
-  }, [liked, fetchedTrack]);
+  }, [liked, fetchedTrack, auth?.token]);
 
+  // toggle like function
   const handelLike = async () => {
     setLiked(!liked);
     if (liked) {
@@ -146,6 +158,7 @@ const Player = () => {
     }
   };
 
+  
   if (auth.token === null) {
     return <Redirect to={"/login"} />;
   }

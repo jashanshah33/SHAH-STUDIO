@@ -13,6 +13,7 @@ const Playlists = () => {
   let headerName = "";
   let playlist_id = "";
 
+  //playlist according to id
   if (id === "0JQ5DAqbMKFCWjUTdzaG0e") {
     playlist_id = "37i9dQZF1EQqkOPvHGajmW";
     headerName = "Indie";
@@ -30,10 +31,11 @@ const Playlists = () => {
     headerName = "Telugu Songs";
   }
 
-  // console.log(id);
 
   useEffect(() => {
-    const getLatestPunjabi = async () => {
+
+    // Fetch playlist accordingly
+    const getPlaylist = async () => {
       await axios
 
         .get(`https://api.spotify.com/v1/playlists/${playlist_id}`, {
@@ -47,12 +49,13 @@ const Playlists = () => {
         });
     };
 
-    getLatestPunjabi();
-  }, [playlist_id,auth]);
+    getPlaylist();
+  }, [playlist_id, auth]);
 
   if (auth.token === null) {
-    return <Redirect to={'/login'} />
-   }
+    return <Redirect to={"/login"} />;
+  }
+
   return (
     <div className="playlist_by_caegories">
       <h1>{headerName}</h1>
@@ -71,7 +74,7 @@ const Playlists = () => {
                   </div>
 
                   <div className="playlist_img">
-                    <img src={song?.track?.album?.images[0].url} />
+                    <img src={song?.track?.album?.images[0].url} alt="" />
                   </div>
                   <div className="description">
                     <h5>{song?.track?.album?.name}</h5>

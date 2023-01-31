@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/authProvider";
-import axios from "axios";
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -8,26 +7,6 @@ export const useAuth = () => {
 
 export const useProvideAuth = () => {
   const [token, setToken] = useState("");
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    if (token) {
-      const getUser = async () => {
-        await axios
-          .get(`https://api.spotify.com/v1/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((d) => {
-            // console.log(d.data);
-            setUser(d.data);
-          });
-      };
-      getUser();
-
-    }
-  }, [token]);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -47,16 +26,16 @@ export const useProvideAuth = () => {
 
     setToken(storedToken);
 
-    console.log(storedToken);
-  }, []);
+  }, [token]);
 
+
+  //logout function
   const logout = () => {
     setToken(null);
     window.localStorage.removeItem("token");
   };
 
   return {
-    user,
     token,
     logout,
   };
